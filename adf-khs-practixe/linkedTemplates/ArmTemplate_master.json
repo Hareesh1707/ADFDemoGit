@@ -1,0 +1,193 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-khs-practixe"
+		},
+		"Azure_SQLDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Azure_SQLDB'"
+		},
+		"IRselfhostedCIT_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'IRselfhostedCIT'"
+		},
+		"LS_SQLserverCIT_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQLserverCIT'"
+		},
+		"ls_azureblobstorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_azureblobstorage'"
+		},
+		"Azure_SQLDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "adfpracticekhs.database.windows.net"
+		},
+		"Azure_SQLDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AdfPractice"
+		},
+		"Azure_SQLDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Hareesh.K"
+		},
+		"IRselfhostedCIT_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "CIT-LP284"
+		},
+		"IRselfhostedCIT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AdventureWorksLT2019"
+		},
+		"IRselfhostedCIT_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "CIT\\Hareesh.K"
+		},
+		"LS_SQLserverCIT_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "CIT-LP284"
+		},
+		"LS_SQLserverCIT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AdventureWorksLT2019"
+		},
+		"LS_SQLserverCIT_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "CIT\\Hareesh.K"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-khs-practixe_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Azure_SQLDB_password": {
+						"value": "[parameters('Azure_SQLDB_password')]"
+					},
+					"ls_azureblobstorage_connectionString": {
+						"value": "[parameters('ls_azureblobstorage_connectionString')]"
+					},
+					"Azure_SQLDB_properties_typeProperties_server": {
+						"value": "[parameters('Azure_SQLDB_properties_typeProperties_server')]"
+					},
+					"Azure_SQLDB_properties_typeProperties_database": {
+						"value": "[parameters('Azure_SQLDB_properties_typeProperties_database')]"
+					},
+					"Azure_SQLDB_properties_typeProperties_userName": {
+						"value": "[parameters('Azure_SQLDB_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf-khs-practixe_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"IRselfhostedCIT_password": {
+						"value": "[parameters('IRselfhostedCIT_password')]"
+					},
+					"LS_SQLserverCIT_password": {
+						"value": "[parameters('LS_SQLserverCIT_password')]"
+					},
+					"IRselfhostedCIT_properties_typeProperties_server": {
+						"value": "[parameters('IRselfhostedCIT_properties_typeProperties_server')]"
+					},
+					"IRselfhostedCIT_properties_typeProperties_database": {
+						"value": "[parameters('IRselfhostedCIT_properties_typeProperties_database')]"
+					},
+					"IRselfhostedCIT_properties_typeProperties_userName": {
+						"value": "[parameters('IRselfhostedCIT_properties_typeProperties_userName')]"
+					},
+					"LS_SQLserverCIT_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQLserverCIT_properties_typeProperties_server')]"
+					},
+					"LS_SQLserverCIT_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQLserverCIT_properties_typeProperties_database')]"
+					},
+					"LS_SQLserverCIT_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLserverCIT_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-khs-practixe_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adf-khs-practixe_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-khs-practixe_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "adf-khs-practixe_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-khs-practixe_ArmTemplate_2')]"
+			]
+		}
+	]
+}

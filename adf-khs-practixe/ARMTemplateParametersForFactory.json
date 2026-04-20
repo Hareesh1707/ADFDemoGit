@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-khs-practixe"
+		},
+		"Azure_SQLDB_password": {
+			"value": ""
+		},
+		"IRselfhostedCIT_password": {
+			"value": ""
+		},
+		"LS_SQLserverCIT_password": {
+			"value": ""
+		},
+		"ls_azureblobstorage_connectionString": {
+			"value": ""
+		},
+		"Azure_SQLDB_properties_typeProperties_server": {
+			"value": "adfpracticekhs.database.windows.net"
+		},
+		"Azure_SQLDB_properties_typeProperties_database": {
+			"value": "AdfPractice"
+		},
+		"Azure_SQLDB_properties_typeProperties_userName": {
+			"value": "Hareesh.K"
+		},
+		"IRselfhostedCIT_properties_typeProperties_server": {
+			"value": "CIT-LP284"
+		},
+		"IRselfhostedCIT_properties_typeProperties_database": {
+			"value": "AdventureWorksLT2019"
+		},
+		"IRselfhostedCIT_properties_typeProperties_userName": {
+			"value": "CIT\\Hareesh.K"
+		},
+		"LS_SQLserverCIT_properties_typeProperties_server": {
+			"value": "CIT-LP284"
+		},
+		"LS_SQLserverCIT_properties_typeProperties_database": {
+			"value": "AdventureWorksLT2019"
+		},
+		"LS_SQLserverCIT_properties_typeProperties_userName": {
+			"value": "CIT\\Hareesh.K"
+		}
+	}
+}
