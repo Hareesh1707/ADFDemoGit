@@ -1,0 +1,27 @@
+{
+	"name": "DS_InputSQL_Foldertab",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "IRselfhostedCIT",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FolderName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Tbl_OutputFolder"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

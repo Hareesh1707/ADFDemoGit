@@ -1,0 +1,21 @@
+{
+	"name": "IRselfhostedCIT",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "CIT-LP284",
+			"database": "AdventureWorksLT2019",
+			"encrypt": "optional",
+			"trustServerCertificate": true,
+			"authenticationType": "Windows",
+			"userName": "CIT\\Hareesh.K",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1ZTQ3MDE4Yy0yYzJhLTRiN2QtOTU0OC00YTgxMDliNjU5YWIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "selfhostedIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

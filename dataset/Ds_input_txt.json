@@ -1,0 +1,20 @@
+{
+	"name": "Ds_input_txt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Input File HR.txt",
+				"folderPath": "SourceData",
+				"container": "khsblobstorage"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

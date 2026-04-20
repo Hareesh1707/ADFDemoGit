@@ -1,0 +1,9 @@
+{
+	"name": "adf-khs-practixe",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2ccb9414-0306-4b8c-8e2b-acabb9697de5",
+		"tenantId": "48e7988e-13ab-4552-865f-9e60c1f83158"
+	}
+}

@@ -1,0 +1,124 @@
+{
+	"name": "InputDataset_excel",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "HR Dashboard YR 2025",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "HR Details.xlsx",
+				"folderPath": "SourceData",
+				"container": "khsblobstorage"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Full Name",
+				"type": "String"
+			},
+			{
+				"name": "Client ID",
+				"type": "String"
+			},
+			{
+				"name": "Client Name",
+				"type": "String"
+			},
+			{
+				"name": "Address 1",
+				"type": "String"
+			},
+			{
+				"name": "City",
+				"type": "String"
+			},
+			{
+				"name": "State/Province",
+				"type": "String"
+			},
+			{
+				"name": "ZIP/Postal Code",
+				"type": "String"
+			},
+			{
+				"name": "Employee Number",
+				"type": "String"
+			},
+			{
+				"name": "Department Code",
+				"type": "String"
+			},
+			{
+				"name": "Birth Date",
+				"type": "String"
+			},
+			{
+				"name": "Hire Date",
+				"type": "String"
+			},
+			{
+				"name": "Termination Date",
+				"type": "String"
+			},
+			{
+				"name": "Seniority Date",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "Rate #1 Pay Rate",
+				"type": "String"
+			},
+			{
+				"name": "Federal Filing Status",
+				"type": "String"
+			},
+			{
+				"name": "Federal Exemptions (W4s saved after 2019 are based on filing status)",
+				"type": "String"
+			},
+			{
+				"name": "Federal Additional Percent",
+				"type": "String"
+			},
+			{
+				"name": "Federal Additional Amount",
+				"type": "String"
+			},
+			{
+				"name": "State Filing Status",
+				"type": "String"
+			},
+			{
+				"name": "State Exemptions",
+				"type": "String"
+			},
+			{
+				"name": "State Additional Percent",
+				"type": "String"
+			},
+			{
+				"name": "State Additional Amount",
+				"type": "String"
+			},
+			{
+				"name": "Gross Wages YTD",
+				"type": "String"
+			},
+			{
+				"name": "Net Amount YTD",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

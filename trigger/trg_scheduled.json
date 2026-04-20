@@ -1,0 +1,25 @@
+{
+	"name": "trg_scheduled",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_CopyData",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-04-10T06:00:00",
+				"endTime": "2026-04-12T05:27:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
