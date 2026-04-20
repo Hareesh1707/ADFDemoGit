@@ -45,6 +45,112 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_OutputEmpDeptMerge')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azureblobstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "Destination",
+						"container": "khsblobstorage"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_outputSwitch')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azureblobstorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Folder",
+							"type": "Expression"
+						},
+						"container": "khsblobstorage"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_outputfolder_if')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azureblobstorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().FolderName",
+							"type": "Expression"
+						},
+						"container": "khsblobstorage"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ds_input_txt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azureblobstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Input File HR.txt",
+						"folderPath": "SourceData",
+						"container": "khsblobstorage"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/InputDataset_excel')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -458,6 +564,7 @@
 				"lastPublishTime": "2026-04-11T05:48:27Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]",
 				"[concat(variables('factoryId'), '/datasets/OutputDataset_txt')]"
 			]
 		},
@@ -606,7 +713,9 @@
 				"annotations": [],
 				"lastPublishTime": "2026-04-13T06:10:47Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_StoredProcedureActivity')]",
@@ -745,7 +854,9 @@
 				"annotations": [],
 				"lastPublishTime": "2026-04-13T06:38:02Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_ifcondition')]",
@@ -892,7 +1003,10 @@
 				"annotations": [],
 				"lastPublishTime": "2026-04-13T06:43:47Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]",
+				"[concat(variables('factoryId'), '/datasets/DS_outputfolder_if')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_switchactivity')]",
@@ -1088,7 +1202,9 @@
 				"lastPublishTime": "2026-04-13T08:11:41Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/OutputDataset_txt')]"
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]",
+				"[concat(variables('factoryId'), '/datasets/OutputDataset_txt')]",
+				"[concat(variables('factoryId'), '/datasets/DS_outputSwitch')]"
 			]
 		},
 		{
@@ -1256,6 +1372,7 @@
 				"lastPublishTime": "2026-04-13T07:29:07Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]",
 				"[concat(variables('factoryId'), '/datasets/OutputDataset_txt')]"
 			]
 		},
@@ -1369,6 +1486,7 @@
 				"lastPublishTime": "2026-04-13T10:30:39Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_input_txt')]",
 				"[concat(variables('factoryId'), '/datasets/OutputDataset_txt')]"
 			]
 		},
@@ -1402,290 +1520,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/IRselfhostedCIT')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_empTab')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_SQLserverCIT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "EmpID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "EmpName",
-						"type": "varchar"
-					},
-					{
-						"name": "DeptID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Salary",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 2
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Employees"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_SQLserverCIT')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_Aggregatetransformation')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_InputEmployee",
-								"type": "DatasetReference"
-							},
-							"name": "EmployeeData"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "DeptwiseEmpCount"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> EmployeeData",
-						"EmployeeData aggregate(groupBy(DEPARTMENT_ID),",
-						"     {Total Employees} = count(EMPLOYEE_ID)) ~> DeptwiseEmpCount",
-						"DeptwiseEmpCount sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['Deptwiseempcount.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          {Dept ID} = DEPARTMENT_ID,",
-						"          {Total Employees}",
-						"     ),",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_EmpDeptMerge')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_InputEmployee",
-								"type": "DatasetReference"
-							},
-							"name": "EmployeeData"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_InputDepartment",
-								"type": "DatasetReference"
-							},
-							"name": "Department"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "JoiningEmpDept"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> EmployeeData",
-						"source(output(",
-						"          DEPARTMENT_ID as string,",
-						"          DEPARTMENT_NAME as string,",
-						"          MANAGER_ID as string,",
-						"          LOCATION_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Department",
-						"EmployeeData, Department join(EmployeeData@DEPARTMENT_ID == Department@DEPARTMENT_ID,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> JoiningEmpDept",
-						"JoiningEmpDept sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['EmployeeFullDetails'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          EMPLOYEE_ID,",
-						"          FIRST_NAME,",
-						"          LAST_NAME,",
-						"          EMAIL,",
-						"          PHONE_NUMBER,",
-						"          HIRE_DATE,",
-						"          JOB_ID,",
-						"          SALARY,",
-						"          COMMISSION_PCT,",
-						"          MANAGER_ID = EmployeeData@MANAGER_ID,",
-						"          DEPARTMENT_NAME,",
-						"          MANAGER_ID = Department@MANAGER_ID,",
-						"          LOCATION_ID",
-						"     ),",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_FilterTransformation')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_InputEmployee",
-								"type": "DatasetReference"
-							},
-							"name": "EmpData"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "FilterPayrollDeptData"
-						},
-						{
-							"name": "ChangedDatatypes",
-							"description": "Autogenerated by data preview actions"
-						},
-						{
-							"name": "RemovedColumns",
-							"description": "Autogenerated by data preview actions"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> EmpData",
-						"RemovedColumns filter(equals(DEPARTMENT_ID, '270')) ~> FilterPayrollDeptData",
-						"EmpData derive(SALARY = toInteger(SALARY),",
-						"          COMMISSION_PCT = toDecimal(COMMISSION_PCT),",
-						"          FIRST_NAME = upper(FIRST_NAME)) ~> ChangedDatatypes",
-						"ChangedDatatypes select(mapColumn(",
-						"          EMPLOYEE_ID,",
-						"          FIRST_NAME,",
-						"          LAST_NAME,",
-						"          EMAIL,",
-						"          HIRE_DATE,",
-						"          JOB_ID,",
-						"          SALARY,",
-						"          COMMISSION_PCT,",
-						"          MANAGER_ID,",
-						"          DEPARTMENT_ID",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> RemovedColumns",
-						"FilterPayrollDeptData sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['EmpPayrollDeptDetails.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }
