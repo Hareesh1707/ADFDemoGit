@@ -1,0 +1,34 @@
+{
+	"name": "df_ParseTransformation",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_AzureSQLtable",
+						"type": "DatasetReference"
+					},
+					"name": "AzureSQLTab"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"parameters{",
+				"     Table as string ('dbo.tbl_emp_Parse')",
+				"}",
+				"source(output(",
+				"          EmpID as integer,",
+				"          EmpName as string,",
+				"          Skills as string,",
+				"          Address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> AzureSQLTab"
+			]
+		}
+	}
+}
