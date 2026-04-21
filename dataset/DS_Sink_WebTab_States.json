@@ -1,0 +1,24 @@
+{
+	"name": "DS_Sink_WebTab_States",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "States.csv",
+				"folderPath": "Destination",
+				"container": "khsblobstorage"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
