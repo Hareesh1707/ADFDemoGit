@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat(dataset().FileName, formatDateTime(utcNow(), 'DDMMYYYY HH:MM:SS'), '.csv')",
+					"value": "@concat(dataset().FileName, formatDateTime(utcNow(), 'yyyyMMdd_HHmmss'), '.csv')",
 					"type": "Expression"
 				},
 				"folderPath": "Output",
