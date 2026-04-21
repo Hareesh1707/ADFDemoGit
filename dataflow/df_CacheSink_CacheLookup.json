@@ -1,0 +1,131 @@
+{
+	"name": "df_CacheSink_CacheLookup",
+	"properties": {
+		"description": "Used cache sink and cache lookup",
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_AzureSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "SQLEmp"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_AzureSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "SQLcountry"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_empCached",
+						"type": "DatasetReference"
+					},
+					"name": "employee"
+				}
+			],
+			"sinks": [
+				{
+					"name": "cachedMaxEmpID"
+				},
+				{
+					"name": "Cachedcountry"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_EmpSink",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "sort1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          MaxEmpID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select max(EmpID) MaxEmpID from dbo.employees',",
+				"     format: 'query') ~> SQLEmp",
+				"source(output(",
+				"          country_id as string,",
+				"          country_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select * from dbo.tbl_country\\n',",
+				"     format: 'query') ~> SQLcountry",
+				"source(output(",
+				"          EmpName as string,",
+				"          DeptID as integer,",
+				"          country as string,",
+				"          Salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> employee",
+				"employee keyGenerate(output(EmpID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(EmpID = EmpID + cachedMaxEmpID#outputs()[1].MaxEmpID,",
+				"          country = Cachedcountry#lookup(country).country_name) ~> derivedColumn1",
+				"derivedColumn1 sort(asc(EmpID, true)) ~> sort1",
+				"SQLEmp sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 0) ~> cachedMaxEmpID",
+				"SQLcountry sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     keys:['country_id'],",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 0) ~> Cachedcountry",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmpID as integer,",
+				"          EmpName as string,",
+				"          Salary as integer,",
+				"          DeptID as integer,",
+				"          Country as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EmpID,",
+				"          EmpName,",
+				"          Salary,",
+				"          DeptID,",
+				"          Country = country",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
