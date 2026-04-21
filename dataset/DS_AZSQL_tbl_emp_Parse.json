@@ -1,5 +1,5 @@
 {
-	"name": "DS_AzureSQLtable",
+	"name": "DS_AZSQL_tbl_emp_Parse",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Azure_SQLDB",

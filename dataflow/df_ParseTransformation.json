@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DS_AzureSQLtable",
+						"referenceName": "DS_AZSQL_tbl_emp_Parse",
 						"type": "DatasetReference"
 					},
 					"name": "AzureSQLTab"
