@@ -13,6 +13,654 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_ifcondition')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@bool(pipeline().parameters.copytooutputfolder1)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Copy data2",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Ds_input_txt",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_outputfolder_if",
+											"type": "DatasetReference",
+											"parameters": {
+												"FolderName": {
+													"value": "@pipeline().parameters.Output2folder",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Ds_input_txt",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_outputfolder_if",
+											"type": "DatasetReference",
+											"parameters": {
+												"FolderName": {
+													"value": "@pipeline().parameters.Output1folder",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"copytooutputfolder1": {
+						"type": "string",
+						"defaultValue": "true"
+					},
+					"Output1folder": {
+						"type": "string",
+						"defaultValue": "output4"
+					},
+					"Output2folder": {
+						"type": "string",
+						"defaultValue": "output5"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-04-13T06:43:47Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_switchactivity')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Switch1",
+						"type": "Switch",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"on": {
+								"value": "@pipeline().parameters.FolderName",
+								"type": "Expression"
+							},
+							"cases": [
+								{
+									"value": "Output1",
+									"activities": [
+										{
+											"name": "Copy data1",
+											"type": "Copy",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"source": {
+													"type": "BinarySource",
+													"storeSettings": {
+														"type": "AzureBlobStorageReadSettings",
+														"recursive": true
+													},
+													"formatSettings": {
+														"type": "BinaryReadSettings"
+													}
+												},
+												"sink": {
+													"type": "BinarySink",
+													"storeSettings": {
+														"type": "AzureBlobStorageWriteSettings"
+													}
+												},
+												"enableStaging": false
+											},
+											"inputs": [
+												{
+													"referenceName": "Ds_input_txt",
+													"type": "DatasetReference",
+													"parameters": {}
+												}
+											],
+											"outputs": [
+												{
+													"referenceName": "DS_outputSwitch",
+													"type": "DatasetReference",
+													"parameters": {
+														"Folder": {
+															"value": "@pipeline().parameters.FolderName",
+															"type": "Expression"
+														}
+													}
+												}
+											]
+										}
+									]
+								},
+								{
+									"value": "Output2",
+									"activities": [
+										{
+											"name": "Copy data2",
+											"type": "Copy",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"source": {
+													"type": "BinarySource",
+													"storeSettings": {
+														"type": "AzureBlobStorageReadSettings",
+														"recursive": true
+													},
+													"formatSettings": {
+														"type": "BinaryReadSettings"
+													}
+												},
+												"sink": {
+													"type": "BinarySink",
+													"storeSettings": {
+														"type": "AzureBlobStorageWriteSettings"
+													}
+												},
+												"enableStaging": false
+											},
+											"inputs": [
+												{
+													"referenceName": "Ds_input_txt",
+													"type": "DatasetReference",
+													"parameters": {}
+												}
+											],
+											"outputs": [
+												{
+													"referenceName": "DS_outputSwitch",
+													"type": "DatasetReference",
+													"parameters": {
+														"Folder": {
+															"value": "@pipeline().parameters.FolderName",
+															"type": "Expression"
+														}
+													}
+												}
+											]
+										}
+									]
+								}
+							],
+							"defaultActivities": [
+								{
+									"name": "Copy data3",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Ds_input_txt",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "OutputDataset_txt",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string",
+						"defaultValue": "Output1"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-04-13T08:11:41Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_untilactivity')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Until1",
+						"type": "Until",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@bool(variables('Fileavailability'))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Get Metadata1",
+									"type": "GetMetadata",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "Ds_input_txt",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"fieldList": [
+											"exists"
+										],
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										},
+										"formatSettings": {
+											"type": "BinaryReadSettings"
+										}
+									}
+								},
+								{
+									"name": "If Condition1",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "Get Metadata1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@bool(activity('Get Metadata1').output.exists)",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "Wait1",
+												"type": "Wait",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"waitTimeInSeconds": 120
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "Set variable1",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "Fileavailability",
+													"value": "true"
+												}
+											}
+										]
+									}
+								}
+							],
+							"timeout": "0.12:00:00"
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Until1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_input_txt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputDataset_txt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Fileavailability": {
+						"type": "String",
+						"defaultValue": "false"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-04-13T07:29:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_validationactivity')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Validation1",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Ds_input_txt",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"timeout": "0.12:00:00",
+							"sleep": 10
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_input_txt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputDataset_txt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "WebHook1",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://dummy.restapiexample.com/api/v1/create",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"name": "test",
+								"salary": "123",
+								"age": "23"
+							},
+							"timeout": "00:10:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-04-13T10:30:39Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_InputSQL_Foldertab')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "IRselfhostedCIT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FolderName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Tbl_OutputFolder"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_empTab')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -111,6 +759,140 @@
 						"          {Total Employees}",
 						"     ),",
 						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_CacheSink_CacheLookup')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Used cache sink and cache lookup",
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "SQLEmp"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "SQLcountry"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_empCached",
+								"type": "DatasetReference"
+							},
+							"name": "employee"
+						}
+					],
+					"sinks": [
+						{
+							"name": "cachedMaxEmpID"
+						},
+						{
+							"name": "Cachedcountry"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_EmpSink",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "sort1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          MaxEmpID as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select max(EmpID) MaxEmpID from dbo.employees',",
+						"     format: 'query') ~> SQLEmp",
+						"source(output(",
+						"          country_id as string,",
+						"          country_name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select * from dbo.tbl_country\\n',",
+						"     format: 'query') ~> SQLcountry",
+						"source(output(",
+						"          EmpName as string,",
+						"          DeptID as integer,",
+						"          country as string,",
+						"          Salary as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> employee",
+						"employee keyGenerate(output(EmpID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(EmpID = EmpID + cachedMaxEmpID#outputs()[1].MaxEmpID,",
+						"          country = Cachedcountry#lookup(country).country_name) ~> derivedColumn1",
+						"derivedColumn1 sort(asc(EmpID, true)) ~> sort1",
+						"SQLEmp sink(validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     store: 'cache',",
+						"     format: 'inline',",
+						"     output: false,",
+						"     saveOrder: 0) ~> cachedMaxEmpID",
+						"SQLcountry sink(validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     keys:['country_id'],",
+						"     store: 'cache',",
+						"     format: 'inline',",
+						"     output: false,",
+						"     saveOrder: 0) ~> Cachedcountry",
+						"sort1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          EmpID as integer,",
+						"          EmpName as string,",
+						"          Salary as integer,",
+						"          DeptID as integer,",
+						"          Country as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          EmpID,",
+						"          EmpName,",
+						"          Salary,",
+						"          DeptID,",
+						"          Country = country",
+						"     )) ~> sink1"
 					]
 				}
 			},
@@ -295,6 +1077,84 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/df_ParseTransformation')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_AZSQL_tbl_emp_Parse",
+								"type": "DatasetReference"
+							},
+							"name": "AzureSQLTab"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_OutputEmpDeptMerge",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Parseskill"
+						},
+						{
+							"name": "parseAddress"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     Table as string ('dbo.tbl_emp_Parse')",
+						"}",
+						"source(output(",
+						"          EmpID as integer,",
+						"          EmpName as string,",
+						"          Skills as string,",
+						"          Address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> AzureSQLTab",
+						"AzureSQLTab parse(ParseSkills = Skills ? (skill1 as string,",
+						"          skill2 as string,",
+						"          skill3 as string),",
+						"     format: 'delimited',",
+						"     columnNamesAsHeader: false,",
+						"     columnDelimiter: '|',",
+						"     nullValue: '') ~> Parseskill",
+						"Parseskill parse(ParseAddress = Address ? (city as string,",
+						"          Country as string),",
+						"     format: 'json',",
+						"     documentForm: 'singleDocument') ~> parseAddress",
+						"parseAddress sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['ParseResult.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          EmpID,",
+						"          EmpName,",
+						"          skill1 = ParseSkills.skill1,",
+						"          skill2 = ParseSkills.skill2,",
+						"          skill3 = ParseSkills.skill3,",
+						"          city = ParseAddress.city,",
+						"          Country = ParseAddress.Country",
+						"     ),",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/df_Pivottransformation')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -349,6 +1209,67 @@
 						"pivot1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     partitionFileNames:['EmpPivotdata.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_RankngTransformation')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_InputEmployee",
+								"type": "DatasetReference"
+							},
+							"name": "Employee"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_OutputEmpDeptMerge",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "rank1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          EMPLOYEE_ID as string,",
+						"          FIRST_NAME as string,",
+						"          LAST_NAME as string,",
+						"          EMAIL as string,",
+						"          PHONE_NUMBER as string,",
+						"          HIRE_DATE as string,",
+						"          JOB_ID as string,",
+						"          SALARY as string,",
+						"          COMMISSION_PCT as string,",
+						"          MANAGER_ID as string,",
+						"          DEPARTMENT_ID as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Employee",
+						"Employee rank(desc(SALARY, true),",
+						"     output(DenseRank as long),",
+						"     dense: true) ~> rank1",
+						"rank1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['EmployeeRankingResult.csv'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1)) ~> sink1"
@@ -896,547 +1817,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_parametarizeddataflow')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_EmpADF",
-								"type": "DatasetReference"
-							},
-							"name": "emp"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_DeptADF",
-								"type": "DatasetReference"
-							},
-							"name": "dept"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "Join",
-							"description": "Joining emp with dept to get deptname"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "filter1"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     DeptName as string",
-						"}",
-						"source(output(",
-						"          EmpID as string,",
-						"          EmpName as string,",
-						"          DeptID as string,",
-						"          Salary as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> emp",
-						"source(output(",
-						"          DeptID as string,",
-						"          DeptName as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> dept",
-						"emp, dept join(emp@DeptID == dept@DeptID,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> Join",
-						"Join select(mapColumn(",
-						"          EmpID,",
-						"          EmpName,",
-						"          DeptID = emp@DeptID,",
-						"          Salary,",
-						"          DeptName",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 filter(DeptName == $DeptName) ~> filter1",
-						"filter1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['dfParametarizedresult.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_selecttransformation')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_EmpADF",
-								"type": "DatasetReference"
-							},
-							"name": "emp"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "select1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EmpID as string,",
-						"          EmpName as string,",
-						"          DeptID as string,",
-						"          Salary as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> emp",
-						"emp select(mapColumn(",
-						"          EmpployeeID = EmpID,",
-						"          EmpName,",
-						"          Salary,",
-						"          DepartmentID = DeptID",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['empselecttransresult.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_sortTransformation')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_EmpADF",
-								"type": "DatasetReference"
-							},
-							"name": "Employee"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "SortingonName"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EmpID as string,",
-						"          EmpName as string,",
-						"          DeptID as string,",
-						"          Salary as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Employee",
-						"Employee sort(asc(EmpName, true),",
-						"     caseInsensitive: true) ~> SortingonName",
-						"SortingonName sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['EmployeeSortResult.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_surrogateKey')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_EmpADF",
-								"type": "DatasetReference"
-							},
-							"name": "Emp"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "surrogateKey1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EmpID as integer,",
-						"          EmpName as string,",
-						"          DeptID as integer,",
-						"          Salary as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Emp",
-						"Emp keyGenerate(output(UniqueID as long),",
-						"     startAt: 1L,",
-						"     stepValue: 1L) ~> surrogateKey1",
-						"surrogateKey1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['EmpSurrogateResult.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_unionTransformation')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ds_hrdata",
-								"type": "DatasetReference"
-							},
-							"name": "HRcsv"
-						},
-						{
-							"dataset": {
-								"referenceName": "ds_ITcsv",
-								"type": "DatasetReference"
-							},
-							"name": "ITcsv"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_MarketingCSV",
-								"type": "DatasetReference"
-							},
-							"name": "MarketingCSV"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_Otherdepart",
-								"type": "DatasetReference"
-							},
-							"name": "OtherDept"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "AllDepartmentDetails"
-						}
-					],
-					"transformations": [
-						{
-							"name": "unionAll"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> HRcsv",
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> ITcsv",
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> MarketingCSV",
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> OtherDept",
-						"HRcsv, ITcsv, MarketingCSV, OtherDept union(byName: true)~> unionAll",
-						"unionAll sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['CombinedEmpDetails.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> AllDepartmentDetails"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/df_windowtransformation')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_InputEmployee",
-								"type": "DatasetReference"
-							},
-							"name": "emp"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutputEmpDeptMerge",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "window1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          LAST_NAME as string,",
-						"          EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          HIRE_DATE as string,",
-						"          JOB_ID as string,",
-						"          SALARY as string,",
-						"          COMMISSION_PCT as string,",
-						"          MANAGER_ID as string,",
-						"          DEPARTMENT_ID as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> emp",
-						"emp window(over(DEPARTMENT_ID),",
-						"     desc(SALARY, true),",
-						"     DenseRank = denseRank()) ~> window1",
-						"window1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['WindowTransResult.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_DF_ExistsCheck')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_existstransformation",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"Employeesdata": {},
-									"Department": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-04-15T12:29:17Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_existstransformation')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_DF_LookUp')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_lookuptransformation",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"employee": {},
-									"dept": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-04-15T13:38:58Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_lookuptransformation')]"
-			]
 		}
 	]
 }
