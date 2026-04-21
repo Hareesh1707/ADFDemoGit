@@ -12,8 +12,23 @@
 					"name": "AzureSQLTab"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_OutputEmpDeptMerge",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Parseskill"
+				},
+				{
+					"name": "parseAddress"
+				}
+			],
 			"scriptLines": [
 				"parameters{",
 				"     Table as string ('dbo.tbl_emp_Parse')",
@@ -27,7 +42,33 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> AzureSQLTab"
+				"     format: 'table') ~> AzureSQLTab",
+				"AzureSQLTab parse(ParseSkills = Skills ? (skill1 as string,",
+				"          skill2 as string,",
+				"          skill3 as string),",
+				"     format: 'delimited',",
+				"     columnNamesAsHeader: false,",
+				"     columnDelimiter: '|',",
+				"     nullValue: '') ~> Parseskill",
+				"Parseskill parse(ParseAddress = Address ? (city as string,",
+				"          Country as string),",
+				"     format: 'json',",
+				"     documentForm: 'singleDocument') ~> parseAddress",
+				"parseAddress sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['ParseResult.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmpID,",
+				"          EmpName,",
+				"          skill1 = ParseSkills.skill1,",
+				"          skill2 = ParseSkills.skill2,",
+				"          skill3 = ParseSkills.skill3,",
+				"          city = ParseAddress.city,",
+				"          Country = ParseAddress.Country",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
