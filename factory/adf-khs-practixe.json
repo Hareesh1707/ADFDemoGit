@@ -1,5 +1,11 @@
 {
 	"name": "adf-khs-practixe",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
 	"location": "southindia",
 	"identity": {
 		"type": "SystemAssigned",
