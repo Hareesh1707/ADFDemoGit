@@ -1,6 +1,9 @@
 {
 	"name": "df_loadFixedlenghtfiletoTab",
 	"properties": {
+		"folder": {
+			"name": "Scenario"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
