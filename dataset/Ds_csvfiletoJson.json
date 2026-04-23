@@ -1,0 +1,57 @@
+{
+	"name": "Ds_csvfiletoJson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "nestedjsonresult.csv",
+				"folderPath": "Destination",
+				"container": "khsblobstorage"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "type",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "ppu",
+				"type": "String"
+			},
+			{
+				"name": "batters ID",
+				"type": "String"
+			},
+			{
+				"name": "batters type",
+				"type": "String"
+			},
+			{
+				"name": "topping id",
+				"type": "String"
+			},
+			{
+				"name": "topping type",
+				"type": "String"
+			}
+		]
+	}
+}
