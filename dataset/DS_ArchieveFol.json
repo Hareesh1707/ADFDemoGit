@@ -1,0 +1,26 @@
+{
+	"name": "DS_ArchieveFol",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "RealTime"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Archieve",
+				"container": "khsblobstorage"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
