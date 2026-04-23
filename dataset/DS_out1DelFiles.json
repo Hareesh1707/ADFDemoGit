@@ -1,0 +1,30 @@
+{
+	"name": "DS_out1DelFiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DelFiles": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "RealTime"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().DelFiles",
+					"type": "Expression"
+				},
+				"folderPath": "Output1",
+				"container": "khsblobstorage"
+			}
+		}
+	}
+}
