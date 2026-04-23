@@ -1,18 +1,24 @@
 {
-	"name": "DS_FolderOut1",
+	"name": "DS_Out1files",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azureblobstorage",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "RealTime"
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
 				"folderPath": "Output1",
 				"container": "khsblobstorage"
 			},
