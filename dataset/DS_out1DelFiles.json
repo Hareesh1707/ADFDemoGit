@@ -1,12 +1,12 @@
 {
-	"name": "DS_Out1files",
+	"name": "DS_out1DelFiles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azureblobstorage",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"FileName": {
+			"DelFiles": {
 				"type": "string"
 			}
 		},
@@ -14,22 +14,17 @@
 			"name": "RealTime"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Binary",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@dataset().FileName",
+					"value": "@dataset().DelFiles",
 					"type": "Expression"
 				},
 				"folderPath": "Output1",
 				"container": "khsblobstorage"
-			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
-		},
-		"schema": []
+			}
+		}
 	}
 }
