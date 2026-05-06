@@ -1,0 +1,68 @@
+{
+	"name": "df_loadcsvandcreatenestedjson",
+	"properties": {
+		"folder": {
+			"name": "Scenario"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Ds_csvfiletoJson",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Ds_outputjson",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          type as string,",
+				"          name as string,",
+				"          ppu as string,",
+				"          {batters ID} as string,",
+				"          {batters type} as string,",
+				"          {topping id} as string,",
+				"          {topping type} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(batters = @(id={batters ID},",
+				"          Type={batters type}),",
+				"          topping = @(id={topping id},",
+				"          type={topping type})) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy(id,",
+				"          type,",
+				"          name,",
+				"          ppu),",
+				"     batters = collect(batters),",
+				"          topping = collect(topping)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['jsonfile.json'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

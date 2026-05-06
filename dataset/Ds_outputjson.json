@@ -1,0 +1,19 @@
+{
+	"name": "Ds_outputjson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Destination",
+				"container": "khsblobstorage"
+			}
+		},
+		"schema": {}
+	}
+}
