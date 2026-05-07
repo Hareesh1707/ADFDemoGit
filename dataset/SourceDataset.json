@@ -1,0 +1,16 @@
+{
+	"name": "SourceDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "IRselfhostedCIT",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "data_source_table"
+		}
+	}
+}

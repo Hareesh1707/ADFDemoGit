@@ -1,0 +1,16 @@
+{
+	"name": "WatermarkDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "IRselfhostedCIT",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "watermarktable"
+		}
+	}
+}
