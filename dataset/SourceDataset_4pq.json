@@ -1,0 +1,16 @@
+{
+	"name": "SourceDataset_4pq",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "IRselfhostedCIT",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SalesLT",
+			"table": "Product"
+		}
+	}
+}
