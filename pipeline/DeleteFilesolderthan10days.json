@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -79,6 +80,7 @@
 								],
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -145,6 +147,8 @@
 		"folder": {
 			"name": "RealTimeScenarios"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2026-05-06T11:13:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
